@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn with Insha - Online Student Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+        }
+        .header-brand h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #1a5276;
+            letter-spacing: 0.5px;
+        }
+        .header-brand span {
+            display: block;
+            font-size: 13px;
+            color: #7f8c8d;
+            font-weight: normal;
+        }
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            background-color: #ecf0f1;
+            border: none;
+            padding: 12px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+            color: #34495e;
+        }
+        .nav-btn.active, .nav-btn:hover {
+            background-color: #2980b9;
+            color: white;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .btn-submit {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #219150;
+        }
+        .card {
+            border: 2px dashed #2980b9;
+            padding: 25px;
+            border-radius: 10px;
+            background: #f8fbff;
+            margin-top: 20px;
+        }
+        .alert {
+            padding: 12px;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #2980b9;
+            color: white;
+        }
+        .badge-paid {
+            background-color: #27ae60;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+        .badge-unpaid {
+            background-color: #e74c3c;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Brand Header & Custom Logo -->
+    <div class="header-brand">
+        <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="14" fill="#2980B9"/>
+            <path d="M32 14L10 25L32 36L54 25L32 14Z" fill="#FFFFFF"/>
+            <path d="M18 30V43C18 46.5 24.3 49 32 49C39.7 49 46 46.5 46 43V30L32 37L18 30Z" fill="#AED6F1"/>
+            <circle cx="50" cy="27" r="2.5" fill="#F1C40F"/>
+            <path d="M50 29.5V39" stroke="#F1C40F" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+            <h1>Learn with Insha <span>Online Student Admission &amp; Portal System</span></h1>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="nav-btn active" onclick="switchTab('register', this)">Registration Form</button>
+        <button class="nav-btn" onclick="switchTab('admitCard', this)">Admit Card</button>
+        <button class="nav-btn" onclick="switchTab('trackApp', this)">Track Application</button>
+        <button class="nav-btn" onclick="switchTab('feeSection', this)">Fee Submission</button>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <!-- 1. Registration Form -->
+    <div id="register" class="section active">
+        <h3>Student Admission Registration</h3>
+        <form id="regForm" onsubmit="handleRegistration(event)">
+            <div class="form-group">
+                <label>Full Name:</label>
+                <input type="text" id="fullName" required placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Father's Name:</label>
+                <input type="text" id="fatherName" required placeholder="Enter father's name">
+            </div>
+            <div class="form-group">
+                <label>CNIC or B-Form Number:</label>
+                <input type="text" id="cnic" required placeholder="xxxxx-xxxxxxx-x">
+            </div>
+            <div class="form-group">
+                <label>Date of Birth:</label>
+                <input type="date" id="dob" required>
+            </div>
+            <div class="form-group">
+                <label>Address:</label>
+                <textarea id="address" rows="3" required placeholder="Enter complete residential address"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Phone Number:</label>
+                <input type="tel" id="phone" required placeholder="03xx-xxxxxxx">
+            </div>
+            <div class="form-group">
+                <label>WhatsApp Number:</label>
+                <input type="tel" id="whatsapp" required placeholder="03xx-xxxxxxx">
+            </div>
+            <button type="submit" class="btn-submit">Submit Registration</button>
+        </form>
+    </div>
+
+    <!-- 2. Admit Card Section (Search via CNIC or WhatsApp) -->
+    <div id="admitCard" class="section">
+        <h3>Search &amp; Download Admit Card</h3>
+        <div class="form-group">
+            <label>Enter CNIC or WhatsApp Number:</label>
+            <input type="text" id="searchCardInput" placeholder="Enter CNIC (xxxxx-xxxxxxx-x) or WhatsApp (03xx-xxxxxxx)">
+            <button class="btn-submit" onclick="generateAdmitCard()" style="background-color: #2980b9; margin-top: 10px;">Find Admit Card</button>
+        </div>
+        <div id="cardResult"></div>
+    </div>
+
+    <!-- 3. Track Application -->
+    <div id="trackApp" class="section">
+        <h3>Track Application Status</h3>
+        <div class="form-group">
+            <label>Enter CNIC or WhatsApp Number:</label>
+            <input type="text" id="searchTrackInput" placeholder="Enter CNIC or WhatsApp Number">
+            <button class="btn-submit" onclick="trackApplication()" style="background-color: #e67e22; margin-top: 10px;">Check Status</button>
+        </div>
+        <div id="trackResult"></div>
+    </div>
+
+    <!-- 4. Fee Section (Submit Fee) -->
+    <div id="feeSection" class="section">
+        <h3>Student Fee Submission</h3>
+        <div class="form-group">
+            <label>Search Student by CNIC or WhatsApp Number:</label>
+            <input type="text" id="searchFeeInput" placeholder="Enter CNIC or WhatsApp Number">
+            <button class="btn-submit" onclick="loadFeeDetails()" style="background-color: #8e44ad; margin-top: 10px;">Load Student Fee Record</button>
+        </div>
+        <div id="feeResult"></div>
+    </div>
+</div>
+
+<script>
+    // Switch Navigation Tabs
+    function switchTab(tabId, btnElement) {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        btnElement.classList.add('active');
+    }
+
+    // Show Notification Alert
+    function showAlert(message, isError = false) {
+        const alertBox = document.getElementById('alertBox');
+        alertBox.style.display = 'block';
+        alertBox.className = isError ? 'alert error' : 'alert';
+        alertBox.innerText = message;
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 4500);
+    }
+
+    // Helper: Find Student by CNIC or WhatsApp Number
+    function findStudent(query) {
+        const cleanQuery = query.trim();
+        if (!cleanQuery) return null;
+        const students = JSON.parse(localStorage.getItem('inshaStudentsList')) || [];
+        return students.find(s => s.cnic === cleanQuery || s.whatsapp === cleanQuery);
+    }
+
+    // 1. Handle Registration
+    function handleRegistration(e) {
+        e.preventDefault();
+        
+        const studentData = {
+            fullName: document.getElementById('fullName').value.trim(),
+            fatherName: document.getElementById('fatherName').value.trim(),
+            cnic: document.getElementById('cnic').value.trim(),
+            dob: document.getElementById('dob').value,
+            address: document.getElementById('address').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            whatsapp: document.getElementById('whatsapp').value.trim(),
+            regNo: 'LWI-' + Math.floor(10000 + Math.random() * 90000),
+            status: 'Approved',
+            feeStatus: 'Unpaid',
+            feeAmount: '0',
+            paymentMethod: '-'
+        };
+
+        let students = JSON.parse(localStorage.getItem('inshaStudentsList')) || [];
+        
+        let existing = students.find(s => s.cnic === studentData.cnic || s.whatsapp === studentData.whatsapp);
+        if (existing) {
+            showAlert('A student with this CNIC or WhatsApp number is already registered!', true);
+            return;
+        }
+
+        students.push(studentData);
+        localStorage.setItem('inshaStudentsList', JSON.stringify(students));
+
+        showAlert('Registration successful at Learn with Insha! Your Reg No: ' + studentData.regNo);
+        document.getElementById('regForm').reset();
+    }
+
+    // 2. Generate Admit Card
+    function generateAdmitCard() {
+        const query = document.getElementById('searchCardInput').value;
+        const student = findStudent(query);
+        const resultDiv = document.getElementById('cardResult');
+
+        if (student) {
+            resultDiv.innerHTML = `
+                <div class="card">
+                    <div style="text-align:center; border-bottom: 1px solid #bdc3c7; padding-bottom: 10px; margin-bottom: 15px;">
+                        <h3 style="margin:0; color: #1a5276;">Learn with Insha</h3>
+                        <small style="color: #555;">Official Admission / Admit Card</small>
+                    </div>
+                    <p><strong>Registration No:</strong> ${student.regNo}</p>
+                    <p><strong>Student Name:</strong> ${student.fullName}</p>
+                    <p><strong>Father's Name:</strong> ${student.fatherName}</p>
+                    <p><strong>CNIC:</strong> ${student.cnic}</p>
+                    <p><strong>WhatsApp No:</strong> ${student.whatsapp}</p>
+                    <p><strong>Fee Status:</strong> ${student.feeStatus === 'Paid' ? '<span class="badge-paid">Paid</span>' : '<span class="badge-unpaid">Unpaid</span>'}</p>
+                    <div style="text-align:center; margin-top: 20px;">
+                        <button onclick="window.print()" style="background:#34495e; color:white; border:none; padding:8px 18px; border-radius:5px; cursor:pointer;">Print Admit Card</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            resultDiv.innerHTML = `<p style="color: #e74c3c; text-align: center; margin-top: 15px;">No record found. Please enter a valid CNIC or WhatsApp number.</p>`;
+        }
+    }
+
+    // 3. Track Application
+    function trackApplication() {
+        const query = document.getElementById('searchTrackInput').value;
+        const student = findStudent(query);
+        const resultDiv = document.getElementById('trackResult');
+
+        if (student) {
+            resultDiv.innerHTML = `
+                <div style="background: #eef2f3; padding: 18px; border-radius: 8px; margin-top: 15px;">
+                    <p><strong>Student Name:</strong> ${student.fullName}</p>
+                    <p><strong>Registration No:</strong> ${student.regNo}</p>
+                    <p><strong>Admission Status:</strong> <span style="color: #27ae60; font-weight: bold;">${student.status}</span></p>
+                    <p><strong>Fee Status:</strong> ${student.feeStatus}</p>
+                </div>
+            `;
+        } else {
+            resultDiv.innerHTML = `<p style="color: #e74c3c; text-align: center; margin-top: 15px;">No application found for this CNIC or WhatsApp number.</p>`;
+        }
+    }
+
+    // 4. Load Fee Details & Submission Form
+    function loadFeeDetails() {
+        const query = document.getElementById('searchFeeInput').value;
+        const student = findStudent(query);
+        const resultDiv = document.getElementById('feeResult');
+
+        if (student) {
+            let paymentFormHtml = '';
+            if (student.feeStatus === 'Unpaid') {
+                paymentFormHtml = `
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #ddd;">
+                        <h4 style="margin-top:0;">Submit Fee Now</h4>
+                        <div class="form-group">
+                            <label>Fee Amount (PKR):</label>
+                            <input type="number" id="feeAmountInput" placeholder="e.g. 1500" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Method:</label>
+                            <select id="paymentMethodInput">
+                                <option value="JazzCash">JazzCash</option>
+                                <option value="EasyPaisa">EasyPaisa</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="Cash">Cash</option>
+                            </select>
+                        </div>
+                        <button class="btn-submit" onclick="submitStudentFee('${student.cnic}')">Confirm &amp; Submit Fee</button>
+                    </div>
+                `;
+            }
+
+            resultDiv.innerHTML = `
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Reg No</th>
+                        <th>Fee Status</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                    </tr>
+                    <tr>
+                        <td>${student.fullName}</td>
+                        <td>${student.regNo}</td>
+                        <td>${student.feeStatus === 'Paid' ? '<span class="badge-paid">Paid</span>' : '<span class="badge-unpaid">Unpaid</span>'}</td>
+                        <td>Rs. ${student.feeAmount}</td>
+                        <td>${student.paymentMethod}</td>
+                    </tr>
+                </table>
+                ${paymentFormHtml}
+            `;
+        } else {
+            resultDiv.innerHTML = `<p style="color: #e74c3c; text-align: center; margin-top: 15px;">No student record found. Please register first.</p>`;
+        }
+    }
+
+    // Save Fee Payment
+    function submitStudentFee(cnic) {
+        const amount = document.getElementById('feeAmountInput').value;
+        const method = document.getElementById('paymentMethodInput').value;
+
+        if (!amount || amount <= 0) {
+            showAlert('Please enter a valid fee amount!', true);
+            return;
+        }
+
+        let students = JSON.parse(localStorage.getItem('inshaStudentsList')) || [];
+        let index = students.findIndex(s => s.cnic === cnic);
+
+        if (index !== -1) {
+            students[index].feeStatus = 'Paid';
+            students[index].feeAmount = amount;
+            students[index].paymentMethod = method;
+            localStorage.setItem('inshaStudentsList', JSON.stringify(students));
+            
+            showAlert('Fee of Rs. ' + amount + ' submitted successfully via ' + method + '!');
+            loadFeeDetails();
+        }
+    }
+</script>
+
+</body>
+</html>
